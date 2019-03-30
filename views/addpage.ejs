@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head> <% include ./head %> </head>
+<body class="container">
+<div class="card login">
+
+    <form method="post" action="saveitem">
+
+        Song Name: <input type="text" name="song" required/>
+        Singer: <input type="text" name="singer" required/>
+        Song URL: <input type="url" name="url" required/>
+        Added by: <input type="text" name="addedBy" value="<%=loginName%>" readonly/>
+        <input type="hidden" name="likes"/>
+
+        <button class="btn" type="submit" name="submit">Add Song</button>
+
+    </form>
+
+</div>
+</body>
+</html>

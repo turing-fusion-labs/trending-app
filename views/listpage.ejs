@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head> <% include ./head %> </head>
+<body class="container">
+
+    <a href="/additem">Add New Item</a>
+
+    <table>
+        <tr>
+            <th>Song</th><th>Singer</th><th>Added By</th><th>Link</th><th>Vote</th>
+        </tr>
+
+        <% items.forEach(function(item){  %>
+        <tr>
+             <td><%= item.song %></td>
+             <td><%= item.singer %></td>
+             <td><%= item.addedBy %></td>
+             <td><a href="<%= item.url%>" target="opensim">Open</a></td>
+             <td><%= item.likes %></td>
+        </tr>
+        <% }) %>
+    </table>
+
+
+</body>
+</html>
