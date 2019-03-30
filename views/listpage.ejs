@@ -16,7 +16,7 @@
              <td><%= item.singer %></td>
              <td><%= item.addedBy %></td>
              <td><a href="<%= item.url%>" target="opensim">Open</a></td>
-             <td><%= item.likes %></td>
+             <td><a href="/like?song=<%= item.song %>">(<%= item.likes %>) like</a></td>
         </tr>
         <% }) %>
     </table>

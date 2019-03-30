@@ -2,7 +2,7 @@
 <html>
 <head> <% include ./head %> </head>
 <body class="container">
-<div class="card login">
+<div class="card">
 
     <form method="post" action="saveitem">
 
@@ -10,7 +10,6 @@
         Singer: <input type="text" name="singer" required/>
         Song URL: <input type="url" name="url" required/>
         Added by: <input type="text" name="addedBy" value="<%=loginName%>" readonly/>
-        <input type="hidden" name="likes"/>
 
         <button class="btn" type="submit" name="submit">Add Song</button>
 

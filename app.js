@@ -6,12 +6,27 @@ var express = require('express'),
     bodyParser = require('body-parser');
 
 //DB config
-var db = new loki('trending.db');
-var User = db.addCollection('users');
-var Item = db.addCollection('items');
+var db = new loki('trending.db', {
+    autoload: true,
+    autoloadCallback : databaseInitialize,
+    autosave: true,
+    autosaveInterval: 4000
+});
+var User //= db.addCollection('users');
+var Item //= db.addCollection('items');
 
-User.insert({username:'admin',password:'admin'});
-console.log(User);
+function databaseInitialize() {
+    User = db.getCollection("users");
+    Item = db.getCollection("items");
+    if (User === null) {
+        User = db.addCollection("users");
+        User.insert({username:'admin',password:'admin'});
+    }
+    if (Item === null) {
+        Item = db.addCollection('items');
+    }
+    console.log(User);
+}
 
 //EJS
 app.set('view engine', 'ejs')
@@ -53,16 +68,6 @@ app.post('/login', function (request, response) {
 
 });
 
-// load list page
-app.get('/login', function (request, response) {
-    response.render('listpage', {items: Item.find()});
-});
-
-// load list page
-app.get('/saveitem', function (request, response) {
-    response.render('listpage', {items: Item.find()});
-});
-
 // save all information on add page
 function saveFormAndReturnAllItems (form) {
     Item.insert(form);
@@ -70,16 +75,37 @@ function saveFormAndReturnAllItems (form) {
     console.log (allItem);
     return allItem;
 }
+
+// like and sort based on name
+function likeAndSort (itemName, itemValue) {
+    var myItem = Item.find({[itemName]:itemValue});
+    if (myItem[0].likes == '' || myItem[0].likes == null)
+        myItem[0].likes = 1;
+    else
+        myItem[0].likes += 1;
+    Item.update(myItem);
+    console.log(myItem[0]);
+    var allItems = Item.chain().find().simplesort('likes').data().reverse();
+    return (allItems);
+}
+
 // ---------- do not change above unless you know what you are doing :) -----------
 
 
 // when the link Add New Item is clicked
 app.get('/additem', function (request, response) {
-    response.render('addpage',{loginName:request.session.user, message:null});
+    response.render('addpage',{loginName:request.session.user});
 });
 
 // when save button is clicked on add page
 app.post('/saveitem', function (request, response) {
     var items = saveFormAndReturnAllItems(request.body);
     response.render('listpage',{ items:items });
+});
+
+// when like link is clicked
+app.get('/like', function (request, response){
+    var song = request.query.song;
+    var allItems = likeAndSort('song',song);
+    response.render('listpage', {items:allItems })
 });
