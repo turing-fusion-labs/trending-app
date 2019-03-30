@@ -68,6 +68,13 @@ app.post('/login', function (request, response) {
 
 });
 
+// delete and sort based on name
+function deleteAndSort (itemName, itemValue) {
+    var myItem = Item.chain().find({[itemName]:itemValue}).remove();
+    var allItems = Item.chain().find().simplesort('likes').data().reverse();
+    return (allItems);
+}
+
 // save all information on add page
 function saveFormAndReturnAllItems (form) {
     Item.insert(form);
@@ -107,5 +114,12 @@ app.post('/saveitem', function (request, response) {
 app.get('/like', function (request, response){
     var song = request.query.song;
     var allItems = likeAndSort('song',song);
+    response.render('listpage', {items:allItems })
+});
+
+// when delete link is clicked
+app.get('/delete', function (request, response){
+    var song = request.query.song;
+    var allItems = deleteAndSort('song',song);
     response.render('listpage', {items:allItems })
 });

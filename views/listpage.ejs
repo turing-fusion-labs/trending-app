@@ -3,24 +3,28 @@
 <head> <% include ./head %> </head>
 <body class="container">
 
-    <a href="/additem">Add New Item</a>
+    <a class="btn" href="/additem">Add New Item</a>
 
-    <table>
+    <div class="card">
+    <table class="highlight">
         <tr>
-            <th>Song</th><th>Singer</th><th>Added By</th><th>Link</th><th>Vote</th>
+            <th>Song</th><th>Singer</th><th>Added By</th><th>Likes</th><th>Actions</th>
         </tr>
 
         <% items.forEach(function(item){  %>
         <tr>
-             <td><%= item.song %></td>
-             <td><%= item.singer %></td>
-             <td><%= item.addedBy %></td>
-             <td><a href="<%= item.url%>" target="opensim">Open</a></td>
-             <td><a href="/like?song=<%= item.song %>">(<%= item.likes %>) like</a></td>
+            <td><a href="<%= item.url%>" target="opensim"><%= item.song %></a></td>
+            <td><%= item.singer %></td>
+            <td><%= item.addedBy %></td>
+            <td><%= item.likes %></td>
+            <td>
+                <a href="/like?song=<%= item.song %>"><i class="material-icons">favorite</i></a>
+                <a href="/delete?song=<%= item.song %>"><i class="material-icons">delete</i></a>
+            </td>
         </tr>
         <% }) %>
     </table>
-
+    </div>
 
 </body>
 </html>
