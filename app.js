@@ -12,8 +12,8 @@ var db = new loki('trending.db', {
     autosave: true,
     autosaveInterval: 4000
 });
-var User //= db.addCollection('users');
-var Item //= db.addCollection('items');
+var User;
+var Item;
 
 function databaseInitialize() {
     User = db.getCollection("users");
@@ -21,6 +21,7 @@ function databaseInitialize() {
     if (User === null) {
         User = db.addCollection("users");
         User.insert({username:'admin',password:'admin'});
+        User.insert({username:'user',password:'user'});
     }
     if (Item === null) {
         Item = db.addCollection('items');
